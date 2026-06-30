@@ -1,0 +1,517 @@
+/* Container styling to center the card on the screen */
+/* for setuser */
+.su-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  /* Strictly lock heights and widths to the viewport */
+  width: 100vw;
+  height: 100vh;
+  max-width: 100%;
+  max-height: 100vh;
+  
+  /* Force disable any scrollbars completely */
+  overflow: hidden; 
+  position: fixed; /* Using fixed ensures mobile browser address bars don't cause layout shifting */
+  top: 0;
+  left: 0;
+  
+  background: #0f172a; /* Deep dark background */
+  font-family: 'Inter', sans-serif;
+}
+
+/* Premium Glassmorphism Card */
+.su-glass-card {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  padding: 2.5rem;
+  background: rgba(30, 41, 59, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+}
+
+/* Ambient glow effects behind the card */
+.su-glow-1 {
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  width: 120px;
+  height: 120px;
+  background: #6366f1; /* Indigo glow */
+  filter: blur(60px);
+  opacity: 0.3;
+  z-index: -1;
+}
+
+.su-glow-2 {
+  position: absolute;
+  bottom: -20px;
+  right: -20px;
+  width: 120px;
+  height: 120px;
+  background: #ec4899; /* Pink/Video glow */
+  filter: blur(60px);
+  opacity: 0.3;
+  z-index: -1;
+}
+
+/* Header & Typography */
+.su-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.su-avatar-wrapper {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 1.25rem auto;
+  box-shadow: 0 8px 16px rgba(99, 102, 241, 0.25);
+}
+
+.su-avatar-icon {
+  color: #ffffff;
+}
+
+.su-header h2 {
+  color: #f8fafc;
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.025em;
+}
+
+.su-header p {
+  color: #94a3b8;
+  font-size: 0.925rem;
+  line-height: 1.5;
+}
+
+/* Form Styles */
+.su-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Input Fields */
+.su-input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.su-input-icon {
+  position: absolute;
+  left: 1rem;
+  color: #64748b;
+  font-size: 1.25rem;
+  transition: color 0.2s ease;
+}
+
+.su-input-group input {
+  width: 100%;
+  padding: 1rem 1rem 1rem 3rem;
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: #f8fafc;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.su-input-group input::placeholder {
+  color: #475569;
+}
+
+.su-input-group input:focus {
+  border-color: #6366f1;
+  background: rgba(15, 23, 42, 0.8);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+}
+
+.su-input-group input:focus + .su-input-icon {
+  color: #6366f1;
+}
+
+/* Action Button */
+.su-submit-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: linear-gradient(90deg, #6366f1, #4f46e5);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.su-submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+  background: linear-gradient(90deg, #4f46e5, #4338ca);
+}
+
+.su-submit-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.su-submit-btn:disabled {
+  background: #334155;
+  color: #64748b;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.su-btn-arrow {
+  transition: transform 0.2s ease;
+}
+
+.su-submit-btn:hover:not(:disabled) .su-btn-arrow {
+  transform: translateX(4px);
+}
+/* for setuser */
+/*for the chat
+//* ==========================================================================
+   1. GLOBAL LOCK SHEET SETUP (Prevents any outside browser scrolling)
+   ========================================================================== */
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden !important;
+  background-color: #0b111e;
+}
+
+.app-workspace {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  max-width: 100%;
+  max-height: 100vh;
+  background: #090d16;
+  font-family: 'Inter', sans-serif;
+  overflow: hidden !important;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+/* ==========================================================================
+   2. VIDEO PANELS SIDE GRID DESIGN RULES
+   ========================================================================== */
+.video-workspace-pane {
+  flex: 1;
+  height: 100%;
+  background: #020617;
+  position: relative;
+  overflow: hidden !important;
+}
+
+.video-component-layout {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem;
+  box-sizing: border-box;
+  overflow: hidden !important;
+}
+
+.video-streams-grid {
+  flex: 1;
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden !important;
+}
+
+/* Remote main box frame */
+.video-card-item.remote-window {
+  width: 100%;
+  height: 100%;
+  max-height: calc(100vh - 110px);
+  background: #1e293b;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Local Camera preview - Shrinked and floating over the layout corner */
+.video-card-item.local-window-preview {
+  position: absolute;
+  bottom: 1.25rem;
+  right: 1.25rem;
+  width: 220px; /* Small, controlled size */
+  height: 140px;
+  background: #0f172a;
+  border-radius: 14px;
+  overflow: hidden;
+  z-index: 30;
+  border: 2px solid #6366f1; /* Glowing indigo frame indicator */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+}
+
+.video-card-item video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #111827;
+}
+
+/* Floating overlay absolute identifiers */
+.video-user-label {
+  position: absolute;
+  bottom: 0.85rem;
+  left: 0.85rem;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(8px);
+  padding: 0.35rem 0.7rem;
+  border-radius: 6px;
+  color: #f8fafc;
+  font-size: 0.78rem;
+  font-weight: 500;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.video-user-label.self-label {
+  background: rgba(99, 102, 241, 0.85);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Call Control Buttons Row underneath viewports */
+.video-controls-row {
+  height: 64px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.75rem;
+}
+
+.ctrl-btn-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.2rem;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+  color: #ffffff;
+}
+.ctrl-btn-item.start-call { background: #10b981; }
+.ctrl-btn-item.start-call:hover { background: #059669; }
+.ctrl-btn-item.end-call { background: #ef4444; }
+.ctrl-btn-item.end-call:hover { background: #dc2626; }
+.ctrl-btn-item.toggle-audio { background: #475569; padding: 0.65rem 0.9rem; }
+.ctrl-btn-item.toggle-audio:hover { background: #334155; }
+.ctrl-btn-item:disabled { background: #1e293b; color: #475569; cursor: not-allowed; }
+
+/* ==========================================================================
+   3. SIDEBAR CHAT PANEL DESIGN (Vertical scroll active here)
+   ========================================================================== */
+.chat-workspace-pane {
+  width: 380px;
+  min-width: 340px;
+  height: 100%;
+  background: #0f172a;
+  border-left: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden !important;
+}
+
+.pane-header {
+  padding: 1.25rem;
+  background: rgba(15, 23, 42, 0.3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.room-meta h3 {
+  color: #f8fafc;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0 0 0.2rem 0;
+}
+
+.live-counter {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: #10b981;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.exit-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.75rem;
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.15);
+  border-radius: 8px;
+  color: #f87171;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.exit-btn:hover { background: #ef4444; color: white; }
+
+/* Scroller setup enabling clean top-to-bottom lists tracking */
+.messages-scroller {
+  flex: 1;
+  padding: 1.25rem;
+  overflow-y: auto !important; /* Only element that moves */
+  overflow-x: hidden !important;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+.messages-scroller::-webkit-scrollbar { width: 4px; }
+.messages-scroller::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.08); border-radius: 10px; }
+
+/* Dynamic Message Row Alignments */
+.msg-row-wrapper {
+  display: flex;
+  width: 100%;
+}
+.msg-row-wrapper.outgoing { justify-content: flex-end; }
+.msg-row-wrapper.incoming { justify-content: flex-start; }
+.bubble-wrapper { max-width: 82%; }
+
+/* Bubble Blocks containing parameters grouped inline */
+.chat-bubble {
+  padding: 0.7rem 0.95rem;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem; /* Clean gap between username and the message body */
+  text-align: left; /* Ensures everything is aligned to the top-left corner */
+}
+
+.msg-row-wrapper.outgoing .chat-bubble {
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+  border-bottom-right-radius: 2px;
+}
+.msg-row-wrapper.outgoing .bubble-author { color: rgba(255, 255, 255, 0.7); }
+.msg-row-wrapper.outgoing .bubble-text { color: #ffffff; }
+
+.msg-row-wrapper.incoming .chat-bubble {
+  background: #1e293b;
+  border-bottom-left-radius: 2px;
+}
+.msg-row-wrapper.incoming .bubble-author { color: #a5b4fc; }
+.msg-row-wrapper.incoming .bubble-text { color: #f1f5f9; }
+
+.bubble-author {
+  display: block; /* Forces it to stay on its own line at the top left */
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  letter-spacing: 0.03em;
+  margin-bottom: 0.1rem;
+}
+.bubble-text {
+  font-size: 0.92rem;
+  margin: 0;
+  line-height: 1.4;
+  word-break: break-word;
+  font-weight: 400;
+}
+.msg-row-wrapper.outgoing .bubble-author { 
+  color: rgba(255, 255, 255, 0.75); /* Slight opacity for "You" so the message stands out */
+}
+
+.msg-row-wrapper.incoming .bubble-author { 
+  color: #818cf8; /* Vibrant, clean indigo tint for peer usernames */
+}
+/* ==========================================================================
+   4. SYSTEM ALERTS COLORED BANNER INTERPOLATORS
+   ========================================================================== */
+.system-banner {
+  align-self: center;
+  font-size: 0.75rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 20px;
+  font-weight: 500;
+  background: rgba(15, 23, 42, 0.4);
+  margin: 0.1rem 0;
+}
+/* New User Connected Event Alert Style */
+.system-banner.join {
+  color: #34d399; /* Green text background theme */
+  border: 1px solid rgba(52, 211, 153, 0.15);
+}
+/* User Disconnected Event Alert Style */
+.system-banner.leave {
+  color: #f87171; /* Red text background theme */
+  border: 1px solid rgba(248, 113, 113, 0.15);
+}
+
+/* Bottom Form Input Wrapper Footer bar */
+.pane-input-footer {
+  padding: 1.15rem;
+  background: rgba(15, 23, 42, 0.3);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  gap: 0.65rem;
+}
+
+.pane-input-footer input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  background: #020617;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  color: #f8fafc;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border 0.15s;
+}
+.pane-input-footer input:focus { border-color: #6366f1; }
+
+.action-send-btn {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #6366f1;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.action-send-btn:hover:not(:disabled) { background: #4f46e5; }
+.action-send-btn:disabled { background: #1e293b; color: #475569; cursor: not-allowed; }
