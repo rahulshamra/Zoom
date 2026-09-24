@@ -23,7 +23,10 @@
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "http-status": "^2.1.0",
+<<<<<<< HEAD
     "jsonwebtoken": "^9.0.3",
+=======
+>>>>>>> f66c690a54900e11880652f86544e383c21efd86
     "mediasoup": "^3.20.9",
     "mongoose": "^9.7.1",
     "nodemon": "^3.1.14",

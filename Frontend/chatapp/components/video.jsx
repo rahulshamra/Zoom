@@ -21,13 +21,17 @@ function Video({ username }) {
   const localVideo = useRef(null);
   const remoteVideo = useRef(null);
   const [audiostate, setAudio] = useState(false);
+<<<<<<< HEAD
   const [roomConnected, setRoomConnected] = useState(socket.connected);
   const [callError, setCallError] = useState("");
+=======
+>>>>>>> f66c690a54900e11880652f86544e383c21efd86
 
   useEffect(() => {
     if (hangupButton.current) hangupButton.current.disabled = true;
     if (muteAudButton.current) muteAudButton.current.disabled = true;
 
+<<<<<<< HEAD
     const handleConnect = () => {
       setRoomConnected(true);
       setCallError("");
@@ -55,6 +59,29 @@ function Video({ username }) {
           } else if (pc) {
             console.log("already in call, ignoring");
           }
+=======
+    const handleSocketMessage = (e) => {
+      if (!localStream) {
+        console.log("not ready yet");
+        return;
+      }
+      switch (e.type) {
+        case "offer":
+          handleOffer(e);
+          break;
+        case "answer":
+          handleAnswer(e);
+          break;
+        case "candidate":
+          handleCandidate(e);
+          break;
+        case "ready":
+          if (pc) {
+            console.log("already in call, ignoring");
+            return;
+          }
+          makeCall();
+>>>>>>> f66c690a54900e11880652f86544e383c21efd86
           break;
         case "bye":
           if (pc) {
@@ -68,6 +95,7 @@ function Video({ username }) {
     };
 
     socket.on("message", handleSocketMessage);
+<<<<<<< HEAD
     socket.on("connect", handleConnect);
     socket.on("disconnect", handleDisconnect);
     socket.on("connect_error", handleConnectError);
@@ -77,6 +105,10 @@ function Video({ username }) {
       socket.off("disconnect", handleDisconnect);
       socket.off("connect_error", handleConnectError);
       hangup();
+=======
+    return () => {
+      socket.off("message", handleSocketMessage);
+>>>>>>> f66c690a54900e11880652f86544e383c21efd86
     };
   }, []);
 
@@ -97,8 +129,13 @@ function Video({ username }) {
       };
       localStream.getTracks().forEach((track) => pc.addTrack(track, localStream));
       const offer = await pc.createOffer();
+<<<<<<< HEAD
       await pc.setLocalDescription(offer);
       socket.emit("message", { type: "offer", sdp: offer.sdp });
+=======
+      socket.emit("message", { type: "offer", sdp: offer.sdp });
+      await pc.setLocalDescription(offer);
+>>>>>>> f66c690a54900e11880652f86544e383c21efd86
     } catch (e) {
       console.log(e);
     }
@@ -126,8 +163,13 @@ function Video({ username }) {
       localStream.getTracks().forEach((track) => pc.addTrack(track, localStream));
       await pc.setRemoteDescription(offer);
       const answer = await pc.createAnswer();
+<<<<<<< HEAD
       await pc.setLocalDescription(answer);
       socket.emit("message", { type: "answer", sdp: answer.sdp });
+=======
+      socket.emit("message", { type: "answer", sdp: answer.sdp });
+      await pc.setLocalDescription(answer);
+>>>>>>> f66c690a54900e11880652f86544e383c21efd86
     } catch (e) {
       console.log(e);
     }
@@ -170,11 +212,14 @@ function Video({ username }) {
   }
 
   const startB = async () => {
+<<<<<<< HEAD
     if (!socket.connected) {
       setCallError("Waiting for the room connection...");
       return;
     }
 
+=======
+>>>>>>> f66c690a54900e11880652f86544e383c21efd86
     try {
       localStream = await navigator.mediaDevices.getUserMedia({
         video: true,
@@ -182,9 +227,13 @@ function Video({ username }) {
       });
       if (localVideo.current) localVideo.current.srcObject = localStream;
     } catch (err) {
+<<<<<<< HEAD
       console.error("Unable to access camera and microphone:", err);
       setCallError("Camera or microphone permission is required.");
       return;
+=======
+      console.log(err);
+>>>>>>> f66c690a54900e11880652f86544e383c21efd86
     }
     startButton.current.disabled = true;
     hangupButton.current.disabled = false;
@@ -193,8 +242,14 @@ function Video({ username }) {
   };
 
   const hangB = async () => {
+<<<<<<< HEAD
     socket.emit("message", { type: "bye" });
     await hangup();
+=======
+    await hangup();
+    socket.disconnect();
+    socket.emit("message", { type: "bye" });
+>>>>>>> f66c690a54900e11880652f86544e383c21efd86
   };
 
   function muteAudio() {
@@ -208,7 +263,10 @@ function Video({ username }) {
 
   return (
     <div className="video-component-layout">
+<<<<<<< HEAD
       {callError && <p className="room-error video-error">{callError}</p>}
+=======
+>>>>>>> f66c690a54900e11880652f86544e383c21efd86
       {/* Video Viewports Block */}
       <div className="video-streams-grid">
         
@@ -228,7 +286,11 @@ function Video({ username }) {
 
       {/* Embedded Controls Panel Row */}
       <div className="video-controls-row">
+<<<<<<< HEAD
         <button className="ctrl-btn-item start-call" ref={startButton} onClick={startB} disabled={!roomConnected}>
+=======
+        <button className="ctrl-btn-item start-call" ref={startButton} onClick={startB}>
+>>>>>>> f66c690a54900e11880652f86544e383c21efd86
           <FiVideo size={16} />
           <span>Start</span>
         </button>

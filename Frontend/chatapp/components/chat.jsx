@@ -3,6 +3,7 @@ import socket from "../src/socket";
 import Video from "./video";
 import { FiSend, FiLogOut, FiUsers } from "react-icons/fi";
 
+<<<<<<< HEAD
 const API_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 
 function Chat({ username, meeting, onLeaveRoom }) {
@@ -11,6 +12,12 @@ function Chat({ username, meeting, onLeaveRoom }) {
   const [onlineUsers, SetonlineUsers] = useState(0);
   const [socketConnected, setSocketConnected] = useState(false);
   const [socketError, setSocketError] = useState("");
+=======
+function Chat({ username, setUsername }) {
+  const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState([]);
+  const [onlineUsers, SetonlineUsers] = useState(0);
+>>>>>>> f66c690a54900e11880652f86544e383c21efd86
   const chatEndRef = useRef(null);
 
   // Auto-scroll to latest message
@@ -19,6 +26,7 @@ function Chat({ username, meeting, onLeaveRoom }) {
   }, [messages]);
 
   useEffect(() => {
+<<<<<<< HEAD
     let active = true;
     socket.auth = { meetingId: meeting.meetingId || meeting._id };
 
@@ -38,11 +46,21 @@ function Chat({ username, meeting, onLeaveRoom }) {
       setSocketConnected(false);
       setSocketError("Room connection failed. Please re-enter the meeting.");
     };
+=======
+    const receiveData = (data) => {
+      setMessages((prev) => [...prev, data]);
+    };
+
+    const connectedUsers = (count) => {
+      SetonlineUsers(count);
+    };
+>>>>>>> f66c690a54900e11880652f86544e383c21efd86
 
     socket.on("chat message", receiveData);
     socket.on("user joined", receiveData); 
     socket.on("user left", receiveData);
     socket.on("online users", connectedUsers);
+<<<<<<< HEAD
     socket.on("connect", handleConnect);
     socket.on("disconnect", handleDisconnect);
     socket.on("connect_error", handleConnectError);
@@ -58,10 +76,15 @@ function Chat({ username, meeting, onLeaveRoom }) {
 
     return () => {
       active = false;
+=======
+
+    return () => {
+>>>>>>> f66c690a54900e11880652f86544e383c21efd86
       socket.off("chat message", receiveData);
       socket.off("user joined", receiveData);
       socket.off("user left", receiveData);
       socket.off("online users", connectedUsers);
+<<<<<<< HEAD
       socket.off("connect", handleConnect);
       socket.off("disconnect", handleDisconnect);
       socket.off("connect_error", handleConnectError);
@@ -75,6 +98,14 @@ function Chat({ username, meeting, onLeaveRoom }) {
       setSocketError("Waiting for the room connection...");
       return;
     }
+=======
+    };
+  }, []);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!message.trim()) return;
+>>>>>>> f66c690a54900e11880652f86544e383c21efd86
 
     const data = {
       username: username,
@@ -82,15 +113,20 @@ function Chat({ username, meeting, onLeaveRoom }) {
     };
 
     setMessages((prevmessages) => [...prevmessages, data]);
+<<<<<<< HEAD
     socket.emit("chat message", data, (result) => {
       if (!result?.ok) setSocketError("Message was not delivered.");
     });
+=======
+    socket.emit("chat message", data);
+>>>>>>> f66c690a54900e11880652f86544e383c21efd86
     setMessage("");
   };
 
   const handleDisconnect = () => {
     socket.disconnect();
     setMessages([]);
+<<<<<<< HEAD
     onLeaveRoom();
   };
 
@@ -104,6 +140,12 @@ function Chat({ username, meeting, onLeaveRoom }) {
         <div><p className="eyebrow"><span className="eyebrow-dot" /> Your live space</p><h1>Stay in the <em>room.</em></h1></div>
         <p>Talk freely, keep the thread.</p>
       </div>
+=======
+    setUsername("");
+  };
+
+  return (
+>>>>>>> f66c690a54900e11880652f86544e383c21efd86
     <div className="app-workspace">
       
       {/* Left Workspace: Fits dynamically without overflow */}
@@ -117,10 +159,17 @@ function Chat({ username, meeting, onLeaveRoom }) {
         {/* Header Metadata */}
         <div className="pane-header">
           <div className="room-meta">
+<<<<<<< HEAD
             <h3>{meeting.meetingName}</h3>
             <div className="live-counter">
               <FiUsers size={14} />
               <span>{socketConnected ? `${onlineUsers} Active` : "Connecting..."}</span>
+=======
+            <h3>Live Streaming Room</h3>
+            <div className="live-counter">
+              <FiUsers size={14} />
+              <span>{onlineUsers} Active</span>
+>>>>>>> f66c690a54900e11880652f86544e383c21efd86
             </div>
           </div>
           <button onClick={handleDisconnect} className="exit-btn">
@@ -168,7 +217,10 @@ function Chat({ username, meeting, onLeaveRoom }) {
           })}
           <div ref={chatEndRef} />
         </div>
+<<<<<<< HEAD
         {socketError && <p className="room-error">{socketError}</p>}
+=======
+>>>>>>> f66c690a54900e11880652f86544e383c21efd86
 
         {/* Message Input Box Block */}
         <form onSubmit={handleSubmit} className="pane-input-footer">
@@ -185,7 +237,10 @@ function Chat({ username, meeting, onLeaveRoom }) {
 
       </div>
     </div>
+<<<<<<< HEAD
     </main>
+=======
+>>>>>>> f66c690a54900e11880652f86544e383c21efd86
   );
 }
 
