@@ -3,35 +3,27 @@ import { useRef, useEffect, useState } from "react";
 import { FiVideo, FiVideoOff, FiMic, FiMicOff } from "react-icons/fi";
 
 const configuration = {
-  iceServers: [
-    {
-      urls: ["stun:stun1.l.google.com:19302", "stun:stun2.l.google.com:19302"],
-    },
-  ],
+  iceServers: [{ urls: ["stun:stun1.l.google.com:19302", "stun:stun2.l.google.com:19302"] }],
   iceCandidatePoolSize: 10,
 };
 
-let pc;
+let peerConnection;
 let localStream;
 
 function Video({ username }) {
   const startButton = useRef(null);
   const hangupButton = useRef(null);
-  const muteAudButton = useRef(null);
+  const muteAudioButton = useRef(null);
   const localVideo = useRef(null);
   const remoteVideo = useRef(null);
-  const [audiostate, setAudio] = useState(false);
-<<<<<<< HEAD
+  const [audioState, setAudioState] = useState(false);
   const [roomConnected, setRoomConnected] = useState(socket.connected);
   const [callError, setCallError] = useState("");
-=======
->>>>>>> f66c690a54900e11880652f86544e383c21efd86
 
   useEffect(() => {
     if (hangupButton.current) hangupButton.current.disabled = true;
-    if (muteAudButton.current) muteAudButton.current.disabled = true;
+    if (muteAudioButton.current) muteAudioButton.current.disabled = true;
 
-<<<<<<< HEAD
     const handleConnect = () => {
       setRoomConnected(true);
       setCallError("");
@@ -41,61 +33,30 @@ function Video({ username }) {
       setRoomConnected(false);
       setCallError("Video room connection failed.");
     };
-
-    const handleSocketMessage = (e) => {
-      switch (e.type) {
+    const handleSocketMessage = (event) => {
+      if (!localStream) return;
+      switch (event.type) {
         case "offer":
-          if (localStream) handleOffer(e);
+          handleOffer(event);
           break;
         case "answer":
-          if (localStream) handleAnswer(e);
+          handleAnswer(event);
           break;
         case "candidate":
-          if (localStream) handleCandidate(e);
+          handleCandidate(event);
           break;
         case "ready":
-          if (localStream && !pc) {
-            makeCall();
-          } else if (pc) {
-            console.log("already in call, ignoring");
-          }
-=======
-    const handleSocketMessage = (e) => {
-      if (!localStream) {
-        console.log("not ready yet");
-        return;
-      }
-      switch (e.type) {
-        case "offer":
-          handleOffer(e);
-          break;
-        case "answer":
-          handleAnswer(e);
-          break;
-        case "candidate":
-          handleCandidate(e);
-          break;
-        case "ready":
-          if (pc) {
-            console.log("already in call, ignoring");
-            return;
-          }
-          makeCall();
->>>>>>> f66c690a54900e11880652f86544e383c21efd86
+          if (!peerConnection) makeCall();
           break;
         case "bye":
-          if (pc) {
-            hangup();
-          }
+          if (peerConnection) hangup();
           break;
         default:
-          console.log("unhandled", e);
           break;
       }
     };
 
     socket.on("message", handleSocketMessage);
-<<<<<<< HEAD
     socket.on("connect", handleConnect);
     socket.on("disconnect", handleDisconnect);
     socket.on("connect_error", handleConnectError);
@@ -105,102 +66,74 @@ function Video({ username }) {
       socket.off("disconnect", handleDisconnect);
       socket.off("connect_error", handleConnectError);
       hangup();
-=======
-    return () => {
-      socket.off("message", handleSocketMessage);
->>>>>>> f66c690a54900e11880652f86544e383c21efd86
     };
   }, []);
 
   async function makeCall() {
     try {
-      pc = new RTCPeerConnection(configuration);
-      pc.onicecandidate = (e) => {
-        const message = { type: "candidate", candidate: null };
-        if (e.candidate) {
-          message.candidate = e.candidate.candidate;
-          message.sdpMid = e.candidate.sdpMid;
-          message.sdpMLineIndex = e.candidate.sdpMLineIndex;
-        }
-        socket.emit("message", message);
-      };
-      pc.ontrack = (e) => {
-        if (remoteVideo.current) remoteVideo.current.srcObject = e.streams[0];
-      };
-      localStream.getTracks().forEach((track) => pc.addTrack(track, localStream));
-      const offer = await pc.createOffer();
-<<<<<<< HEAD
-      await pc.setLocalDescription(offer);
+      peerConnection = new RTCPeerConnection(configuration);
+      configurePeerConnection();
+      localStream.getTracks().forEach((track) => peerConnection.addTrack(track, localStream));
+      const offer = await peerConnection.createOffer();
+      await peerConnection.setLocalDescription(offer);
       socket.emit("message", { type: "offer", sdp: offer.sdp });
-=======
-      socket.emit("message", { type: "offer", sdp: offer.sdp });
-      await pc.setLocalDescription(offer);
->>>>>>> f66c690a54900e11880652f86544e383c21efd86
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      console.error(error);
     }
   }
 
   async function handleOffer(offer) {
-    if (pc) {
-      console.error("existing peerconnection");
-      return;
-    }
+    if (peerConnection) return;
     try {
-      pc = new RTCPeerConnection(configuration);
-      pc.onicecandidate = (e) => {
-        const message = { type: "candidate", candidate: null };
-        if (e.candidate) {
-          message.candidate = e.candidate.candidate;
-          message.sdpMid = e.candidate.sdpMid;
-          message.sdpMLineIndex = e.candidate.sdpMLineIndex;
-        }
-        socket.emit("message", message);
-      };
-      pc.ontrack = (e) => {
-        if (remoteVideo.current) remoteVideo.current.srcObject = e.streams[0];
-      };
-      localStream.getTracks().forEach((track) => pc.addTrack(track, localStream));
-      await pc.setRemoteDescription(offer);
-      const answer = await pc.createAnswer();
-<<<<<<< HEAD
-      await pc.setLocalDescription(answer);
+      peerConnection = new RTCPeerConnection(configuration);
+      configurePeerConnection();
+      localStream.getTracks().forEach((track) => peerConnection.addTrack(track, localStream));
+      await peerConnection.setRemoteDescription(offer);
+      const answer = await peerConnection.createAnswer();
+      await peerConnection.setLocalDescription(answer);
       socket.emit("message", { type: "answer", sdp: answer.sdp });
-=======
-      socket.emit("message", { type: "answer", sdp: answer.sdp });
-      await pc.setLocalDescription(answer);
->>>>>>> f66c690a54900e11880652f86544e383c21efd86
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      console.error(error);
     }
   }
 
   async function handleAnswer(answer) {
-    if (!pc) return;
+    if (!peerConnection) return;
     try {
-      await pc.setRemoteDescription(answer);
-    } catch (e) {
-      console.log(e);
+      await peerConnection.setRemoteDescription(answer);
+    } catch (error) {
+      console.error(error);
     }
   }
 
   async function handleCandidate(data) {
+    if (!peerConnection) return;
     try {
-      if (!pc) return;
-      if (!data.candidate) {
-        await pc.addIceCandidate(null);
-      } else {
-        await pc.addIceCandidate(data);
-      }
-    } catch (e) {
-      console.log(e);
+      await peerConnection.addIceCandidate(data.candidate ? data : null);
+    } catch (error) {
+      console.error(error);
     }
   }
 
+  function configurePeerConnection() {
+    peerConnection.onicecandidate = (event) => {
+      const message = { type: "candidate", candidate: null };
+      if (event.candidate) {
+        message.candidate = event.candidate.candidate;
+        message.sdpMid = event.candidate.sdpMid;
+        message.sdpMLineIndex = event.candidate.sdpMLineIndex;
+      }
+      socket.emit("message", message);
+    };
+    peerConnection.ontrack = (event) => {
+      if (remoteVideo.current) remoteVideo.current.srcObject = event.streams[0];
+    };
+  }
+
   async function hangup() {
-    if (pc) {
-      pc.close();
-      pc = null;
+    if (peerConnection) {
+      peerConnection.close();
+      peerConnection = null;
     }
     if (localStream) {
       localStream.getTracks().forEach((track) => track.stop());
@@ -208,99 +141,53 @@ function Video({ username }) {
     }
     if (startButton.current) startButton.current.disabled = false;
     if (hangupButton.current) hangupButton.current.disabled = true;
-    if (muteAudButton.current) muteAudButton.current.disabled = true;
+    if (muteAudioButton.current) muteAudioButton.current.disabled = true;
   }
 
-  const startB = async () => {
-<<<<<<< HEAD
+  const startCall = async () => {
     if (!socket.connected) {
       setCallError("Waiting for the room connection...");
       return;
     }
-
-=======
->>>>>>> f66c690a54900e11880652f86544e383c21efd86
     try {
-      localStream = await navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: { echoCancellation: true },
-      });
+      localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: { echoCancellation: true } });
       if (localVideo.current) localVideo.current.srcObject = localStream;
-    } catch (err) {
-<<<<<<< HEAD
-      console.error("Unable to access camera and microphone:", err);
+    } catch (error) {
+      console.error("Unable to access camera and microphone:", error);
       setCallError("Camera or microphone permission is required.");
       return;
-=======
-      console.log(err);
->>>>>>> f66c690a54900e11880652f86544e383c21efd86
     }
     startButton.current.disabled = true;
     hangupButton.current.disabled = false;
-    muteAudButton.current.disabled = false;
+    muteAudioButton.current.disabled = false;
     socket.emit("message", { type: "ready" });
   };
 
-  const hangB = async () => {
-<<<<<<< HEAD
+  const endCall = async () => {
     socket.emit("message", { type: "bye" });
     await hangup();
-=======
-    await hangup();
-    socket.disconnect();
-    socket.emit("message", { type: "bye" });
->>>>>>> f66c690a54900e11880652f86544e383c21efd86
   };
 
-  function muteAudio() {
+  const toggleAudio = () => {
     if (!localStream) return;
     const audioTrack = localStream.getAudioTracks()[0];
     if (audioTrack) {
       audioTrack.enabled = !audioTrack.enabled;
-      setAudio(audioTrack.enabled);
+      setAudioState(audioTrack.enabled);
     }
-  }
+  };
 
   return (
     <div className="video-component-layout">
-<<<<<<< HEAD
       {callError && <p className="room-error video-error">{callError}</p>}
-=======
->>>>>>> f66c690a54900e11880652f86544e383c21efd86
-      {/* Video Viewports Block */}
       <div className="video-streams-grid">
-        
-        {/* Remote Camera Box (Main focused window) */}
-        <div className="video-card-item remote-window">
-          <video ref={remoteVideo} autoPlay playsInline placeholder="Remote Video Frame" />
-          <div className="video-user-label">Remote Stream</div>
-        </div>
-
-        {/* Local Personal Camera Box (Made smaller, tucked cleanly inside corner layout) */}
-        <div className="video-card-item local-window-preview">
-          <video ref={localVideo} autoPlay playsInline muted placeholder="Local Video Frame" />
-          <div className="video-user-label self-label">{username} (You)</div>
-        </div>
-
+        <div className="video-card-item remote-window"><video ref={remoteVideo} autoPlay playsInline /><div className="video-user-label">Remote Stream</div></div>
+        <div className="video-card-item local-window-preview"><video ref={localVideo} autoPlay playsInline muted /><div className="video-user-label self-label">{username} (You)</div></div>
       </div>
-
-      {/* Embedded Controls Panel Row */}
       <div className="video-controls-row">
-<<<<<<< HEAD
-        <button className="ctrl-btn-item start-call" ref={startButton} onClick={startB} disabled={!roomConnected}>
-=======
-        <button className="ctrl-btn-item start-call" ref={startButton} onClick={startB}>
->>>>>>> f66c690a54900e11880652f86544e383c21efd86
-          <FiVideo size={16} />
-          <span>Start</span>
-        </button>
-        <button className="ctrl-btn-item end-call" ref={hangupButton} onClick={hangB}>
-          <FiVideoOff size={16} />
-          <span>End</span>
-        </button>
-        <button className="ctrl-btn-item toggle-audio" ref={muteAudButton} onClick={muteAudio}>
-          {!audiostate ? <FiMicOff size={16} /> : <FiMic size={16} />}
-        </button>
+        <button className="ctrl-btn-item start-call" ref={startButton} onClick={startCall} disabled={!roomConnected}><FiVideo size={16} /><span>Start</span></button>
+        <button className="ctrl-btn-item end-call" ref={hangupButton} onClick={endCall}><FiVideoOff size={16} /><span>End</span></button>
+        <button className="ctrl-btn-item toggle-audio" ref={muteAudioButton} onClick={toggleAudio}>{!audioState ? <FiMicOff size={16} /> : <FiMic size={16} />}</button>
       </div>
     </div>
   );
