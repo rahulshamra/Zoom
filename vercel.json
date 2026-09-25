@@ -1,5 +1,0 @@
-{
-  "installCommand": "npm install --prefix Frontend/chatapp",
-  "buildCommand": "npm run build --prefix Frontend/chatapp",
-  "outputDirectory": "Frontend/chatapp/dist"
-}
