@@ -1,0 +1,1 @@
+.landing-page{min-height:100vh;height:auto;overflow-x:hidden;overflow-y:auto}.landing-page::-webkit-scrollbar{width:8px}.landing-page::-webkit-scrollbar-track{background:var(--paper)}.landing-page::-webkit-scrollbar-thumb{border:2px solid var(--paper);border-radius:10px;background:var(--sage)}.landing-page{scrollbar-color:var(--sage) var(--paper);scrollbar-width:thin}

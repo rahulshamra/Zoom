@@ -1,6 +1,5 @@
 import { User } from "../models/userSchema.js";
 import httpStatus from "http-status";
-<<<<<<< HEAD
 import bcrypt from 'bcrypt';
 import jwt from "jsonwebtoken";
 import { Meeting } from "../models/mettingSchema.js";
@@ -118,20 +117,10 @@ const deleteChatMessage = async (req, res) => {
     console.error(error);
     return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: "Internal server error" });
   }
-=======
-import bcrypt, { hash } from 'bcrypt';
-import crypto from "crypto";
-
-const getUsers = async (req, res) => {
-  const data = await User.find({});
-  res.json(data);
-  console.log(data);
->>>>>>> f66c690a54900e11880652f86544e383c21efd86
 }
 // signupUser
 const signUpUser = async (req, res) => {
   try {
-<<<<<<< HEAD
     const username = req.body.username?.trim();
     const password = req.body.password;
 
@@ -158,29 +147,6 @@ const signUpUser = async (req, res) => {
       return res.status(httpStatus.BAD_REQUEST).json({ message: err.message });
     }
 
-=======
-    let d = {
-      name: 'Rahul11',
-      username: 'Rahul@9003',
-      password: 'Rahul@9001',
-      token: 'onet his ',
-    }
-    const existUser = await User.find({ username: d.username });
-    console.log(existUser.length);
-
-    if (existUser.length) {
-      return res.status(200).json({ message: "user already exist" });
-    }
-
-    const hashPassword = await bcrypt.hash(d.password, 10);
-    d.password = hashPassword;
-    const user = new User(d);
-    const t = await user.save();
-    console.log(t);
-    return res.status(httpStatus.CREATED).json({ message: "user created successfully " });
-  } catch (err) {
-    console.error(err);
->>>>>>> f66c690a54900e11880652f86544e383c21efd86
     return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: "Internal server error" });
   }
 
@@ -188,7 +154,6 @@ const signUpUser = async (req, res) => {
 // logInUser
 
 const logInUser = async (req, res) => {
-<<<<<<< HEAD
   try {
     const { username, password } = req.body;
 
@@ -218,54 +183,15 @@ const logInUser = async (req, res) => {
     console.error(error);
     return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: "Internal server error" });
   }
-=======
-  let d = {
-    username: 'Rahul@9003',
-    password: 'Rahul@9001',
-  }
-  console.log(d);
-  const existUser = await User.findOne({ username: d.username });
-  console.log(existUser);
-  if (!existUser) {
-    return res.status(httpStatus.NOT_FOUND).json({ message: "User Not Found" });
-  }
-  
- let isExist=await (bcrypt.compare(d.password, existUser.password));
-  if (isExist) {
-    try {
-      let token = crypto.randomBytes(20).toString('hex');
-      existUser.token = token;
-      console.log(token);
-      await existUser.save();
-      res.status(200).json({ message: "Login Successfully" });
-    }
-    catch (error) {
-      console.log(error);
-      res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: "Internal server error" });
-    }
-  }
-
-
-  else {
-    res.status(httpStatus.UNAUTHORIZED).json({ message: "Invalid username or password" });
-  }
-
-
-
->>>>>>> f66c690a54900e11880652f86544e383c21efd86
 }
 //
 
 
 
 
-<<<<<<< HEAD
 const logOutUser = (req, res) => {
   res.clearCookie("auth_token", cookieOptions);
   return res.json({ message: "Logged out successfully" });
 }
 
 export { getUsers, getCurrentUser, joinMeeting, getMeetings, getChatHistory, clearChatHistory, deleteChatMessage, signUpUser, logInUser, logOutUser };
-=======
-export { getUsers, signUpUser, logInUser };
->>>>>>> f66c690a54900e11880652f86544e383c21efd86

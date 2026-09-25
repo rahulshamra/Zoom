@@ -1,0 +1,43 @@
+.dashboard-page{min-height:100vh;height:auto;overflow:visible}.dashboard-page .private-nav{position:relative}.dashboard-page .dashboard-grid{padding-bottom:96px}.dashboard-page .history-panel{max-height:none}.dashboard-page .dashboard-aside{height:max-content}html:has(.dashboard-page),body:has(.dashboard-page),#root:has(.dashboard-page){height:auto;min-height:100%;overflow-x:hidden!important;overflow-y:auto!important}@media(max-width:800px){.dashboard-page{overflow-x:hidden;overflow-y:visible}.dashboard-page .dashboard-grid{padding-bottom:60px}}
+/* Modal Message List aur history scrollable container */
+.modal-message-list,
+.meeting-summary-list {
+  max-height: 400px; /* Ya jitni height aapko chahiye */
+  overflow-y: auto;
+  padding-right: 8px; /* Content scrollbar ke peeche na chhupe */
+}
+
+/* Custom Scrollbar Styling (Chrome, Safari, Edge) */
+.modal-message-list::-webkit-scrollbar,
+.meeting-summary-list::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-message-list::-webkit-scrollbar-track,
+.meeting-summary-list::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track {
+  background: #1a1a1a; /* Aapke dark background ke hisab se */
+  border-radius: 4px;
+}
+
+.modal-message-list::-webkit-scrollbar-thumb,
+.meeting-summary-list::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb {
+  background: #333333;
+  border-radius: 4px;
+}
+
+.modal-message-list::-webkit-scrollbar-thumb:hover,
+.meeting-summary-list::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover {
+  background: #555555;
+}
+
+/* Firefox Scrollbar Support */
+.modal-message-list,
+.meeting-summary-list,
+body {
+  scrollbar-width: thin;
+  scrollbar-color: #333333 #1a1a1a;
+}

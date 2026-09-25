@@ -67,6 +67,7 @@ function Video({ username }) {
       socket.off("connect_error", handleConnectError);
       hangup();
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function makeCall() {
@@ -178,16 +179,25 @@ function Video({ username }) {
   };
 
   return (
-    <div className="video-component-layout">
+    <div className="video-component-layout video-room-theme">
+      <div className="video-panel-heading">
+        <div>
+          <span className="video-panel-kicker">LIVE CAMERA</span>
+          <h3>Face to face</h3>
+        </div>
+        <span className={`video-connection-badge ${roomConnected ? "is-connected" : "is-offline"}`}>
+          <i /> {roomConnected ? "Ready" : "Offline"}
+        </span>
+      </div>
       {callError && <p className="room-error video-error">{callError}</p>}
       <div className="video-streams-grid">
         <div className="video-card-item remote-window"><video ref={remoteVideo} autoPlay playsInline /><div className="video-user-label">Remote Stream</div></div>
         <div className="video-card-item local-window-preview"><video ref={localVideo} autoPlay playsInline muted /><div className="video-user-label self-label">{username} (You)</div></div>
       </div>
       <div className="video-controls-row">
-        <button className="ctrl-btn-item start-call" ref={startButton} onClick={startCall} disabled={!roomConnected}><FiVideo size={16} /><span>Start</span></button>
-        <button className="ctrl-btn-item end-call" ref={hangupButton} onClick={endCall}><FiVideoOff size={16} /><span>End</span></button>
-        <button className="ctrl-btn-item toggle-audio" ref={muteAudioButton} onClick={toggleAudio}>{!audioState ? <FiMicOff size={16} /> : <FiMic size={16} />}</button>
+        <button className="ctrl-btn-item start-call" ref={startButton} onClick={startCall} disabled={!roomConnected} aria-label="Start camera"><FiVideo size={16} /><span>Start camera</span></button>
+        <button className="ctrl-btn-item end-call" ref={hangupButton} onClick={endCall} aria-label="End call"><FiVideoOff size={16} /><span>End call</span></button>
+        <button className="ctrl-btn-item toggle-audio" ref={muteAudioButton} onClick={toggleAudio} aria-label={audioState ? "Mute microphone" : "Unmute microphone"}>{!audioState ? <FiMicOff size={16} /> : <FiMic size={16} />}<span>{audioState ? "Mute" : "Mic"}</span></button>
       </div>
     </div>
   );

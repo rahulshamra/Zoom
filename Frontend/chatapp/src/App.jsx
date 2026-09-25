@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 import "./navbar.css";
+import "./video-theme.css";
+import "./chat-theme.css";
+import "./dashboard-scroll.css";
+import "./video-controls.css";
+import "./landing-scroll.css";
 import "./meeting.css";
 import "./refinement.css";
 import "./modal.css";

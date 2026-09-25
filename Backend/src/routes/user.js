@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { Router } from "express"
 import { getUsers, getCurrentUser, joinMeeting, getMeetings, getChatHistory, clearChatHistory, deleteChatMessage, signUpUser, logInUser, logOutUser } from "../controllers/userControlller.js"
 import { authenticate } from "../middleware/auth.js";
@@ -14,14 +13,6 @@ router.get('/meetings', getMeetings);
 router.get('/meetings/:meetingId/chat-history', getChatHistory);
 router.delete('/meetings/:meetingId/chat-history', clearChatHistory);
 router.delete('/meetings/:meetingId/chat-history/:messageId', deleteChatMessage);
-=======
-import  {Router} from  "express"
-import {getUsers,signUpUser,logInUser} from "../controllers/userControlller.js"
-const router=Router();
-router.get('/', getUsers);
-router.post('/',signUpUser);
-router.post('/login',logInUser);
->>>>>>> f66c690a54900e11880652f86544e383c21efd86
 
 export default router;
  

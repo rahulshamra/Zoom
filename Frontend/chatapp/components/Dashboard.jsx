@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   FiArrowRight,
   FiClock,
@@ -10,7 +10,6 @@ import {
   FiX,
 } from "react-icons/fi";
 
-
 const API_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8000";
 
 function Dashboard({ username, onJoinRoom, onLogout }) {
@@ -21,6 +20,14 @@ function Dashboard({ username, onJoinRoom, onLogout }) {
   const [showJoinForm, setShowJoinForm] = useState(false);
   const [selectedMeeting, setSelectedMeeting] = useState(null);
   const [joining, setJoining] = useState(false);
+
+  // Chat scroll reference
+  const chatEndRef = useRef(null);
+
+  // Scroll to bottom whenever selected meeting or chat updates
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [selectedMeeting]);
 
   useEffect(() => {
     let active = true;
@@ -148,29 +155,33 @@ function Dashboard({ username, onJoinRoom, onLogout }) {
                 <p>Your conversation will appear here.</p>
               </div>
             ) : (
-              selectedMeeting.chatHistory.map((message) => (
-                <article
-                  className={`history-item ${
-                    message.username === username
-                      ? "history-item-self"
-                      : "history-item-other"
-                  }`}
-                  key={message._id || message.time}
-                >
-                  <div className="history-message">
-                    <strong>{message.username}</strong>
-                    <span className="history-message-text">
-                      {message.message}
-                    </span>
-                    <time>
-                      {new Date(message.time).toLocaleString([], {
-                        dateStyle: "medium",
-                        timeStyle: "short",
-                      })}
-                    </time>
-                  </div>
-                </article>
-              ))
+              <>
+                {selectedMeeting.chatHistory.map((message) => (
+                  <article
+                    className={`history-item ${
+                      message.username === username
+                        ? "history-item-self"
+                        : "history-item-other"
+                    }`}
+                    key={message._id || message.time}
+                  >
+                    <div className="history-message">
+                      <strong>{message.username}</strong>
+                      <span className="history-message-text">
+                        {message.message}
+                      </span>
+                      <time>
+                        {new Date(message.time).toLocaleString([], {
+                          dateStyle: "medium",
+                          timeStyle: "short",
+                        })}
+                      </time>
+                    </div>
+                  </article>
+                ))}
+                {/* Auto-scroll anchor */}
+                <div ref={chatEndRef} />
+              </>
             )}
           </div>
           <footer className="chat-history-modal-footer">
@@ -273,7 +284,9 @@ function Dashboard({ username, onJoinRoom, onLogout }) {
                     <small>
                       {meeting.chatHistory.length} message
                       {meeting.chatHistory.length === 1 ? "" : "s"} ·{" "}
-                      {new Date(meeting.meetingStartDate).toLocaleDateString()}
+                      {new Date(
+                        meeting.meetingStartDate
+                      ).toLocaleDateString()}
                     </small>
                   </span>
                   <FiArrowRight className="summary-arrow" />
@@ -306,7 +319,7 @@ function Dashboard({ username, onJoinRoom, onLogout }) {
             <div>
               <FiPlus />
               <span>Ready to start</span>
-              <strong>1 room</strong>
+              <strong> room</strong>
             </div>
           </div>
         </aside>
